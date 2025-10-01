@@ -1,0 +1,93 @@
+# Start with Hardhat
+
+Hardhat is a development environment to compile, deploy, test, and debug your Solidity smart contracts.
+It is an all-in-one solution that provides everything you need to build, test, deploy, and interact with smart contracts on the FAIR blockchain.
+
+## Prerequisites
+
+- Install Hardhat by following the instructions in the [Hardhat Documentation](https://hardhat.org/getting-started/).
+
+
+:::note
+The FAIR docs are designed for use with Linux and MacOS operating systems. If you are using a Windows machine, it is recommended to use
+the Windows Subsystem for Linux (WSL) to ensure compatibility. If you have issues, please [contact the FAIR team for support](https://discord.gg/skale).
+:::
+
+## Setup Project
+
+::::steps
+
+### Create Hardhat Project
+
+The first step is to create the Hardhat project
+
+```shell
+npx hardhat --init
+```
+
+:::tip
+- Select **Hardhat 3** Beta when prompted
+- Enter **fair-capp** as the project name/path when prompted
+- Select **Typescript** with **Node Test Runner and Viem** when prompted
+:::
+
+### Configure Hardhat for FAIR
+
+Next, you need to configure Hardhat to connect and work with the FAIR network. Update your `hardhat.config.ts` to include the following:
+
+```ts filename="hardhat.config.ts"
+import type { HardhatUserConfig } from "hardhat/config";
+
+import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
+import { configVariable } from "hardhat/config";
+
+const config: HardhatUserConfig = {
+  plugins: [hardhatToolboxViemPlugin],
+  solidity: {
+    profiles: {
+      default: {
+        version: "0.8.24",
+      },
+      production: {
+        version: "0.8.24",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 2000,
+          },
+        },
+      },
+    },
+  },
+  networks: {
+    "fair-testnet": {
+        type: "http",
+        chainType: "l1",
+        url: "https://testnet-rpc.fair.cloud",
+        accounts: [configVariable("PRIVATE_KEY")],
+    },
+    "fair-mainnet": {
+      type: "http",
+      chainType: "l1",
+      url: "<coming-soon>",
+      accounts: [configVariable("PRIVATE_KEY")],
+    }
+  },
+};
+
+export default config;
+```
+
+### Setup Environment
+
+Create a `.env` file in the root of your project and add your private key:
+
+```plaintext filename=".env"
+PRIVATE_KEY=your_private_key_here
+```
+::::
+
+## Next Steps
+
+Now that your project is set up, you can start building your confidential application (cApp) on FAIR!
+Checkout the [tutorials](/builders/tutorials) for more examples!

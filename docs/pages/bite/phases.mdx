@@ -1,0 +1,72 @@
+---
+title: Phases of BITE
+description: The roadmap of BITE capabilities across consensus, storage, re-encryption, and homomorphic compute
+---
+
+## Phase 1 – Threshold Decryption In Consensus
+
+Phase 1 introduces encrypted transaction handling directly into the consensus process.
+
+- Transactions (including data and recipient addresses) remain fully encrypted until supermajority consensus is reached.
+- Once consensus is secured, transactions are decrypted just-in-time (JIT) for EVM execution.
+- Eliminates all front-running and MEV vectors while maintaining single-slot finality and throughput.
+
+Key Features:
+- MEV-Proof Transactions – Prevents preview and extraction by validators or sequencers.
+- One-Round Encrypted Consensus – No additional consensus rounds or latency penalties.
+
+Unlocks:
+- Private DeFi
+- Shielded prediction markets
+- Concurrent transaction flows
+- Encrypted CLOB or TWAP order execution
+
+## Phase 2 – Threshold Decryption In Solidity
+
+Phase 2 extends encryption to onchain data at rest. Smart contracts can store encrypted state and decrypt it selectively in block N+1 using threshold decryption.
+
+This phase also introduces Conditional Transactions (CTXs): transactions that bind confidential payloads to onchain or time-based triggers and execute them in a later block. CTXs enable trigger-driven, deferred execution while keeping inputs and logic sealed until reveal.
+
+Key Features:
+- On-Demand Encrypted Storage – Private state variables decryptable only when called.
+- Privacy-Native Contract Logic – Sealed bids, hidden triggers, deferred reveals.
+- Conditional Transactions (CTXs) – Trigger-based execution of confidential payloads in later blocks (deferred reveal).
+
+Unlocks:
+- Confidential compute
+- Onchain gaming logic privacy
+- Sealed-action workflows
+- Conditional transactions (CTXs) and trigger-driven flows
+
+## Phase 3 – Threshold Re‑Encryption
+
+Phase 3 introduces re-encryption, enabling secure transfer of encrypted data between users and smart contracts.
+
+- Encrypted outputs can be re-encrypted to a user’s public key (or group key) without onchain decryption.
+- Grants selective access while preserving privacy.
+
+Key Features:
+- Fine-Grained Encrypted Access Control – Re-encrypt results to specific users/groups.
+- Trustless Confidential Coordination – Enables private DAOs and encrypted escrows.
+
+Unlocks:
+- Secure data sharing
+- Dispute resolution
+- Enterprise workflows
+- Private governance
+
+## Phase 4 – Threshold Fully Homomorphic Encryption (THFE)
+
+Phase 4 enables computation on encrypted data without ever decrypting it.
+
+- Smart contracts can run mathematical operations over encrypted values.
+- Combines homomorphic encryption with ZK-like verification for privacy-preserving computation.
+
+Key Features:
+- Private Compute on Encrypted Inputs – No decryption required for execution.
+- Confidential Logic + Confidential Data – Fully private program states.
+
+Unlocks:
+- Confidential tokens
+- Onchain banking
+- Private voting for DAOs and governments

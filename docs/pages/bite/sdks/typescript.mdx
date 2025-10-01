@@ -1,0 +1,97 @@
+---
+title: TypeScript SDK
+description: Use bite.ts to encrypt transactions and interact with BITE-enabled chains
+---
+
+## Overview
+
+The TypeScript SDK for BITE (bite.ts) lets apps and wallets encrypt Ethereum‑style transactions so FAIR validators can include them privately and decrypt only after consensus finality.
+
+Repo: https://github.com/skalenetwork/bite-ts
+
+
+## Installation
+
+:::code-group
+ 
+```bash [npm]
+npm i @skalenetwork/bite
+```
+
+```bash [yarn]
+yarn add @skalenetwork/bite
+```
+
+```bash [pnpm]
+pnpm i @skalenetwork/bite
+```
+ 
+```bash [bun]
+bun i @skalenetwork/bite
+```
+ 
+:::
+
+
+## Quick Start
+
+```ts
+import { BITE } from '@skalenetwork/bite';
+
+const providerUrl = 'https://your-fair-rpc';
+const bite = new BITE(providerUrl);
+
+// Minimal tx object: encrypts `to` and `data` and rewrites `to` to BITE magic address
+const tx = {
+	to: '0x1234567890abcdef1234567890abcdef12345678',
+	data: '0x1234abcd',
+};
+
+const encryptedTx = await bite.encryptTransaction(tx);
+// send via your wallet / provider, e.g. window.ethereum.request({ method: 'eth_sendTransaction', params: [encryptedTx] })
+
+// Later, fetch revealed original fields after block finality
+const result = await bite.getDecryptedTransactionData('<txHash>');
+// result => { to: '0x...', data: '0x...' }
+```
+
+
+## API
+
+### new BITE(endpoint)
+- `endpoint: string` – BITE JSON‑RPC provider URL
+
+### bite.encryptTransaction(tx)
+- `tx: { to: string; data: string; /* optional gas and other fields */ }` – standard hex strings
+- Returns: `Promise<Transaction>` – encrypted params safe to submit to `eth_sendTransaction`
+
+### bite.encryptMessage(message)
+- `message: string` – hex string; returns encrypted hex RLP
+
+### bite.getDecryptedTransactionData(transactionHash)
+- Returns: `Promise<{ to: string; data: string }>`
+
+### bite.getCommitteesInfo()
+- Returns: `Promise<Array<{ commonBLSPublicKey: string; epochId: number }>>`
+- During rotation windows, two entries may be returned; encryption handles single/dual committee automatically.
+
+
+## Notes on Committee Rotation
+
+During scheduled rotations, the SDK can dual‑encrypt so transactions seamlessly survive key transitions.
+
+
+## Examples
+
+See examples in the repository for full apps:
+- Message Encryption Demo: end‑to‑end flow with MetaMask and explorer
+- Encrypted Transfer Demo: encodes ERC‑20‑like transfer and submits via BITE
+
+Repo Examples: https://github.com/skalenetwork/bite-ts/tree/main/examples
+
+
+## Troubleshooting
+
+- Ensure you target a BITE‑enabled FAIR RPC endpoint.
+- If decryption data is not available yet, the transaction may not be finalized; poll after confirmation.
+- For local testing, consult the repo scripts to run a node and SGX simulator.

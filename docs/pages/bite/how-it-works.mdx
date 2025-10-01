@@ -1,0 +1,126 @@
+---
+title: MEV Deep Dive
+description: What MEV Is, Where It Comes From, And Why Only Consensus‑Layer Protections Like BITE Close It
+---
+
+## What Is MEV?
+
+Maximal Extractable Value (MEV) is the profit that block producers and ecosystem actors can capture by observing transactions before they execute and then choosing how to order, insert, or censor them. MEV arises anywhere ordering rights meet state‑dependent payoffs.
+
+Learn more:
+- chain.link/education-hub/maximal-extractable-value-mev
+- ethereum.org/developers/docs/mev/
+- arxiv.org/abs/2407.19572
+- ledger.com/academy/glossary/maximal-extractable-value-mev
+
+Who Extracts MEV Today:
+- Searchers – craft profitable bundles (arbitrage, liquidations, sandwich)
+- Builders/Relays – order bundles; sell flow; back‑order across flows
+- Proposers/Validators – finalize ordering within protocol constraints
+
+---
+
+## Where MEV Comes From (With Examples)
+
+Public visibility of transaction intent enables many strategies:
+
+- Sandwiching A DEX Swap
+	- Front‑run: buy before a visible large swap to move price
+	- Back‑run: sell after to harvest the victim’s slippage
+
+- Backrunning Liquidations
+	- Detect liquidation windows; race to execute and capture the premium
+
+- Just‑In‑Time (JIT) Liquidity On AMMs
+	- Add liquidity for one trade; collect fees; remove liquidity
+
+- Oracle/Feed Timing And OEV (Oracle Extractable Value)
+	- Trade around price updates; order execution to influence downstream protocols
+	- See: blog.redstone.finance/.../oracle-extractable-value-in-defi-part-1what-is-oev-and-how-does-it-work/
+
+- Cross‑Venue Arbitrage And NFT Sniping
+	- Exploit venue price gaps or pending listings via mempool visibility
+
+Further reading on builder dynamics: galaxy.com/insights/research/mev-the-rise-of-the-builders
+
+---
+
+## Why Private RPCs And Private Mempools Do Not Close MEV
+
+Point solutions reduce some surface but leave key gaps:
+
+- Orderflow Auctions (OFAs) And Private RPCs
+	- Flow can still be sold; users must trust offchain operators
+	- Builders can back‑order across flows; cross‑domain state leaks intent
+
+- “Private Mempools” And Encryption In Transit
+	- Metadata and timing correlate flow; actors still infer intent
+	- Final ordering power remains offchain; bundle markets persist
+
+- Offchain Trust And Censorship Risks
+	- Wallets/RPCs/relays are choke points; operators reorder or delay
+	- Cross‑domain MEV (L1/L2/bridges/oracles) exploits visibility elsewhere
+
+Conclusion: as long as transaction contents are visible before finality, someone with ordering rights can extract value.
+
+---
+
+## The Only Durable Fix: Protect At The Consensus Layer
+
+Consensus‑level privacy removes the “preview” step entirely:
+
+- Commit‑Then‑Reveal
+	- Include and finalize encrypted transactions; no pre‑finality preview
+	- After finality, reveal data for execution
+
+- Threshold Encryption Of Intent
+	- Encrypt `to` and `data` with a committee public key; decryption requires committee collaboration
+	- No builder/proposer or private RPC can view or sell flow
+
+- Deterministic Security
+	- Breaking privacy requires substantial committee collusion
+	- No offchain promises or trusted relays
+
+---
+
+## How BITE Neutralizes MEV In Practice
+
+On FAIR, the BITE Protocol integrates threshold encryption directly into consensus:
+
+- Encrypted Inclusion
+	- Transactions propagate and are included while `to` and `data` remain concealed
+
+- Post‑Finality Decryption
+	- After finality, validators decrypt just‑in‑time (JIT) for EVM execution
+
+- Wallet And Tooling Compatibility
+	- Encryption layers atop Ethereum’s format; standard wallets/RPCs work unchanged
+
+Walkthroughs Vs. Attack Classes:
+- Sandwiching: pools, pairs, and amounts are hidden pre‑execution → no front‑/back‑run crafting
+- Liquidations: health and payoff details are hidden → no profitable race window
+- Oracle/OEV: dependent calls are concealed → ordering games around updates fade
+- Flow Markets: encrypted intent → nothing to sell or back‑order
+
+---
+
+## What Remains After BITE?
+
+- Legitimate Fees And Priority
+	- Tips/priorities remain; protocol fees still apply
+
+- External‑Domain MEV
+	- Other chains/venues still have MEV; BITE removes FAIR‑side visibility and feedback
+
+- Application Design
+	- Keep slippage/deadlines as safety rails; with BITE they are backup, not primary defense
+
+---
+
+## Developer Pointers
+
+- Use the TypeScript SDK to encrypt transactions client‑side: /bite/sdks/typescript
+- Review the Phases of BITE to understand future capabilities (re‑encryption, THFE): /bite/phases
+- Background reading:
+	- BITE Whitepaper: https://skale.space/BITEWhitepaper
+	- FAIR Whitepaper: https://fairchain.ai/whitepaper

@@ -1,0 +1,121 @@
+---
+title: Glossary
+description: Core Terms For BITE, MEV, And Confidential Execution
+---
+
+## AMM (Automated Market Maker)
+Onchain exchange mechanism where liquidity pools algorithmically price trades without a traditional order book. AMMs enable permissionless swaps and concentrated liquidity strategies like JIT. Learn more: https://ethereum.org/en/developers/docs/amm/ and Uniswap v3: https://uniswap.org/whitepaper-v3.pdf.
+
+## Backrunning
+Submitting a transaction immediately after a target transaction to capture predictable state changes (for example, the second leg of a sandwich). Backrunning thrives on pre‑execution visibility and deterministic ordering rights. Overview: https://ethereum.org/developers/docs/mev/.
+
+## BITE (Blockchain Integrated Threshold Encryption)
+Consensus‑integrated threshold encryption on FAIR that keeps transaction `to` and `data` confidential until post‑finality execution. BITE removes the pre‑execution preview, shutting down sandwiching, back‑ordering, and flow‑selling at the protocol layer. Whitepaper: https://skale.space/BITEWhitepaper, FAIR: https://fairchain.ai/whitepaper, SDK: https://github.com/skalenetwork/bite-ts.
+
+## BLS (Boneh–Lynn–Shacham) Signatures
+Short, aggregatable signatures used in many consensus systems for efficiency and threshold schemes. BLS supports aggregation/verification properties useful for committee signatures. Background: IETF CFRG draft: https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-bls-signature.
+
+## Builder
+Packages and orders transaction bundles for block production, often within Proposer‑Builder Separation (PBS) markets. Builders can buy orderflow, reorder bundles, and influence execution ordering. Background: https://ethereum.org/en/roadmap/pbs/ and research: https://www.galaxy.com/insights/research/mev-the-rise-of-the-builders/.
+
+## CLOB (Central Limit Order Book)
+An order book model that matches bids and asks by price and time priority. CLOBs can leak trading intent through visible orders and pending transactions, creating MEV opportunities.
+
+## Commit‑Then‑Reveal
+A cryptographic pattern where intent is committed first (unreadable), then revealed later for execution or verification. On FAIR with BITE, inclusion and finality occur on encrypted transactions; contents are revealed post‑finality for EVM execution.
+
+## Committee Rotation
+Periodic change of the validator committee and fresh keys to limit long‑term correlation risks and improve security. Rotation schedules influence encryption keys used during inclusion, with clients handling single or dual‑key encryption during transitions. Background: Gennaro et al., “Secure Distributed Key Generation for Discrete‑Log Based Cryptosystems” (IACR ePrint 1999/034): https://eprint.iacr.org/1999/034.
+
+## Confidential Application (cApp)
+An application that treats user intent, data, and often state as confidential by default. On FAIR, cApps combine BITE’s encrypted inclusion with privacy‑native patterns (like CTXs, sealed bids, deferred reveals) while staying EVM‑compatible. Background: FAIR Whitepaper https://fairchain.ai/whitepaper and BITE: https://skale.space/BITEWhitepaper.
+
+## Confidential Compute
+Executing logic without exposing inputs, intermediate state, or outputs to unauthorized parties. On FAIR, confidentiality is enforced at consensus via BITE; future phases extend privacy with re‑encryption and homomorphic compute. See: FAIR Whitepaper https://fairchain.ai/whitepaper.
+
+## Consensus
+Protocol by which validators agree on block contents and ordering, culminating in finality. If pre‑finality contents are visible, MEV arises; removing pre‑finality visibility at the protocol layer neutralizes it. Primer: https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/.
+
+## Conditional Transactions (CTXs)
+Transactions that bind confidential payloads to onchain or time‑based triggers for execution in a later block. CTXs keep inputs and logic sealed until reveal, enabling trigger‑driven flows (for example: “If BTC hits $100,000, execute encrypted payload”). Background: BITE & commit‑then‑reveal in FAIR: https://skale.space/BITEWhitepaper, https://fairchain.ai/whitepaper.
+
+## DKG (Distributed Key Generation)
+Protocol to generate public/private keys across multiple parties without a trusted dealer. Each validator holds a share; keys refresh on rotation epochs to limit exposure. Background: Gennaro et al., IACR ePrint 1999/034: https://eprint.iacr.org/1999/034.
+
+## Epoch
+A bounded time window used for consensus scheduling, committee rotation, or staking accounting. Keys and committees can change on epoch boundaries to compartmentalize risk. Reference: https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/#finality.
+
+## Encrypted Inclusion
+Including transactions without revealing their `to` and `data` fields prior to finality. Encrypted inclusion removes pre‑execution previews, blocking common MEV vectors like sandwiching and back‑ordering. See BITE: https://skale.space/BITEWhitepaper.
+
+## EVM (Ethereum Virtual Machine)
+Deterministic runtime for executing smart contracts compatible with Ethereum tooling. FAIR maintains EVM compatibility while layering threshold encryption for confidential inclusion. Overview: https://ethereum.org/en/developers/docs/evm/.
+
+## Finality
+The point at which a block is considered irreversible by the consensus protocol. When inclusion precedes decryption, commit‑then‑reveal semantics preserve confidentiality until finality. Primer: https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/#finality.
+
+## Front‑Running
+Inserting a transaction before a known target transaction to profit from predictable state changes (for example, buying before a large swap). Front‑running depends on pre‑execution visibility and predictable ordering. Overview: https://ethereum.org/developers/docs/mev/.
+
+## Homomorphic Encryption
+Encryption that supports computation directly on ciphertext, producing encrypted outputs that decrypt to the correct result. BITE’s roadmap includes Threshold Fully Homomorphic Encryption (THFE) within smart contracts. Background: Homomorphic Encryption Standard (homomorphicencryption.org): https://homomorphicencryption.org/standard/.
+
+## JIT Liquidity
+“Just‑In‑Time” liquidity: providing capital to an AMM only for a targeted trade or narrow window to capture fees, then removing it. JIT exploits visibility into pending flow and concentrated liquidity mechanics. Uniswap v3 whitepaper: https://uniswap.org/whitepaper-v3.pdf.
+
+## Liquidation
+Forced closing or partial repayment of a position in lending protocols when collateralization thresholds are breached. Visibility into near‑liquidation positions enables MEV races to capture liquidation incentives. Overview: https://chain.link/education-hub/liquidations.
+
+## MEV (Maximal Extractable Value)
+Profit captured by changing or exploiting transaction ordering, insertion, or censorship. MEV exists wherever transaction visibility meets state‑dependent payoffs—DEX swaps, liquidations, arbitrage, and more. Sources: https://chain.link/education-hub/maximal-extractable-value-mev, https://ethereum.org/developers/docs/mev/, https://www.ledger.com/academy/glossary/maximal-extractable-value-mev, https://arxiv.org/abs/2407.19572.
+
+## Mempool
+Staging area for pending transactions prior to inclusion. Public mempools leak intent and enable MEV; “private mempools” mitigate but do not remove offchain trust, back‑ordering, or flow selling. Primer: https://ethereum.org/en/developers/docs/transactions/.
+
+## OEV (Oracle Extractable Value)
+A subset of MEV that arises around oracle price updates and feed timing. Actors profit by anticipating updates or shaping ordering around them to impact downstream protocols. See: https://blog.redstone.finance/2024/07/05/oracle-extractable-value-in-defi-part-1what-is-oev-and-how-does-it-work/.
+
+## OFA (Orderflow Auction)
+Mechanism where wallets/RPCs route transactions to auctions for builders to bid on inclusion and ordering. OFAs reduce some leakage but still rely on offchain trust and enable flow selling and back‑ordering. Background: https://ethereum.org/en/roadmap/pbs/.
+
+## Oracle
+Service that delivers external data (for example, prices) to smart contracts onchain. Oracle latency and update timing can create OEV opportunities. Learn more: https://chain.link/education-hub/what-is-a-blockchain-oracle.
+
+## PBS (Proposer‑Builder Separation)
+Architecture that separates block proposing from block building to improve efficiency and reduce validator load. Without protocol‑level privacy, PBS still admits MEV through builder‑level ordering markets. Overview: https://ethereum.org/en/roadmap/pbs/.
+
+## Private RPC
+Transaction routing that bypasses public mempools, often tied to OFAs or builder relays. Private RPCs reduce broadcast leakage but still allow offchain entities to sell flow or back‑order against it. Background: https://ethereum.org/en/developers/docs/transactions/.
+
+## Proposer / Validator
+Validators participate in consensus and finalize blocks; proposers have the right to propose block contents under protocol rules. In PBS, proposers select winning blocks from builders; without protocol privacy, ordering power can still extract MEV. Background: https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/.
+
+## Re‑Encryption
+Transforming ciphertext under one public key so it can be decrypted under another, without learning the plaintext. Re‑encryption enables selective sharing of confidential results to users or groups. Background: Ateniese et al., “Improved Proxy Re‑Encryption Schemes with Applications to Secure Distributed Storage” (IACR ePrint 2005/324): https://eprint.iacr.org/2005/324.
+
+## Relay
+An intermediary that transmits builder blocks or orderflow to proposers. Relays introduce offchain trust and potential censorship or reordering unless constrained by protocol‑level guarantees. Context: https://ethereum.org/en/roadmap/pbs/.
+
+## Sandwich Attack
+Placing a transaction before and after a target trade to move price and harvest victim slippage. Sandwiching requires visibility into pending trades and deterministic ordering. Overview: https://ethereum.org/developers/docs/mev/.
+
+## Searcher
+An actor that crafts strategies (arbitrage, liquidations, sandwich) to harvest MEV from public transaction intent. Searchers scan pending transactions, simulate outcomes, and submit bundles to builders or directly to validators where permitted. Overview: https://ethereum.org/developers/docs/mev/.
+
+## THFE (Threshold Fully Homomorphic Encryption)
+Combines threshold cryptography with homomorphic computation so smart contracts can operate on encrypted data without decryption. THFE enables confidential logic and confidential data simultaneously. Background: Homomorphic Encryption Standard (homomorphicencryption.org): https://homomorphicencryption.org/standard/.
+
+## Threshold Encryption
+An encryption scheme where decryption requires collaboration among a threshold of key‑share holders; a single party cannot decrypt alone. In BITE, user intent (`to`, `data`) is encrypted under committee keys and revealed only after block finality.
+
+## TWAP (Time‑Weighted Average Price)
+Execution strategy or oracle metric that averages price over time to reduce impact from short‑term volatility. TWAP execution can leak intent in public systems; BITE hides parameters until execution. Overview: https://docs.uniswap.org/ and general finance references.
+
+## Two‑Phase Execution Model
+Model where inclusion/finality occur first on encrypted transactions, then decryption and execution follow. This commit‑then‑reveal design removes pre‑execution previews and closes common MEV vectors. See BITE: https://skale.space/BITEWhitepaper.
+
+## Validator Committee
+The active set of validators responsible for proposing and finalizing blocks during an epoch. In BITE, the committee also participates in key management and threshold decryption post‑finality. Primer: https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/.
+
+## Zero‑Knowledge Proofs (ZK)
+Proofs that demonstrate a statement is true without revealing the underlying data. ZK techniques complement confidentiality by enabling verifiable privacy. Overview: https://ethereum.org/en/developers/docs/zero-knowledge-proofs/.

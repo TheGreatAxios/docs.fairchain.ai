@@ -1,0 +1,40 @@
+# Network Fees
+
+FAIR implements a custom high-performance implementation of the Ethereum Virtual Machine (EVM) and a fully bespoke client
+designed to support confidental applications (cApps) within consensus. The network implements the following fee mechanisms:
+
+## Gas on FAIR
+
+FAIR implements the standard EVM gas model with a few modifications to support confidentiality and instant finality.
+As encryption on FAIR is optional, the default transaction utilizes the following to determine gas fees:
+
+:::note
+The base cost of a transaction on FAIR is 21,000 units of gas, same as most EVM chains.
+:::
+
+### Type-0 (Legacy) Transactions
+
+Total Fee = Gas Used * Gas Price
+
+### Type-2 (EIP-1559) Transactions
+
+Total Fee = Gas Used * (Base Fee + Priority Fee Per Gas)
+
+Where:
+- **Gas Used**: The total amount of gas consumed by the transaction.
+- **Base Fee**: The minimum gas price required for a transaction to be included in a block, which adjusts dynamically based on network demand.
+- **Priority Fee Per Gas**: The actual priority fee paid (min of `max_priority_fee_per_gas` and `max_fee_per_gas - base_fee`).
+- **Max Fee Per Gas**: The maximum total fee per gas the sender is willing to pay.
+- **Max Priority Fee Per Gas**: The maximum priority fee per gas the sender is willing to pay to incentivize validators.
+
+## Encryption (BITE) Fee
+
+BITE Protocol utilizes the underlying threshold decryption mechanism within consensus to offer the encrypted mempool,
+conditional triggers, and fully homomorphic encryption (FHE) without the use of zero-knowledge proofs (ZKPs). However, as this is all done
+directly within the blockchain, there is additional cost to using these features.
+
+The initial cost of a BITE transaction is an additional fee of 21,000 units of gas.
+This would make the minimum cost of a BITE transaction 42,000 units of gas (21,000 base + 21,000 BITE fee).
+
+With most transactions on public blockchains being subject to maximal extractable value (MEV) through front-running and other manipulations,
+the additional cost of BITE is minimal when compared to the value of confidentiality and protection from manipulation.

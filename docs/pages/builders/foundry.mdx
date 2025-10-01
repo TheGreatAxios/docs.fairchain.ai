@@ -1,0 +1,54 @@
+# Start with Foundry
+
+Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.
+It is an all-in-one solution that provides everything you need to build, test, deploy, and interact with smart contracts on the FAIR blockchain.
+
+## Prerequisites
+
+- Install Foundry by following the instructions in the [Foundry Book](https://book.getfoundry.sh/getting-started/installation).
+
+:::note
+The FAIR docs are designed for use with Linux and MacOS operating systems. If you are using a Windows machine, it is recommended to use
+the Windows Subsystem for Linux (WSL) to ensure compatibility. If you have issues, please [contact the FAIR team for support](https://discord.gg/skale).
+:::
+
+## Setup Project
+
+::::steps
+
+### Create Directory
+
+The first step is to create a new directory for your project and navigate into it. You can do this using the following commands:
+
+```shell
+mkdir fair-capp && cd fair-capp
+```
+
+### Create Foundry Project
+
+The second step is to create the foundry project 
+
+```shell
+forge init
+```
+
+### Configure Foundry for FAIR
+
+Next, you need to configure Foundry to connect and work with the FAIR network. Update your `foundry.toml` to include the following:
+
+```toml filename="foundry.toml"
+[profile.default]
+src = "src"
+out = "out"
+solc = '0.8.24'
+evm_version = 'shanghai'
+optimize = true
+optimizer_runs = 2000
+libs = ["lib"]
+```
+::::
+
+## Next Steps
+
+Now that your project is set up, you can start building your confidential application (cApp) on FAIR!
+Checkout the [tutorials](/builders/tutorials) for more examples!

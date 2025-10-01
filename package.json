@@ -1,0 +1,32 @@
+{
+  "name": "docs.fairchain.ai",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "author": {
+    "name": "Sawyer Cutler",
+    "url": "https://thegreataxios.com"
+  },
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Sawyer Cutler",
+      "url": "https://thegreataxios.com"
+    }
+  ],
+  "scripts": {
+    "dev": "vocs dev",
+    "build": "vocs build",
+    "preview": "vocs preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.544.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "vocs": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "typescript": "latest"
+  }
+}
