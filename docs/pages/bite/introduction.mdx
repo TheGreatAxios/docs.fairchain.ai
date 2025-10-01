@@ -17,8 +17,6 @@ This ensures that:
 
 PoE uses threshold encryption, where decryption is only possible when the active validator committee collaborates. After inclusion and finality, encrypted transactions can be securely decrypted for execution.
 
----
-
 ## How BITE Enables Proof‑of‑Encryption
 
 The BITE Protocol implements Proof of Encryption on the FAIR blockchain. It builds on years of research and production operation of SKALE Consensus, extending the Ethereum Virtual Machine (EVM) and Solidity to handle threshold‑encrypted user transactions and data.
@@ -36,9 +34,8 @@ BITE development is divided into four phases:
 3. Threshold re-encryption.
 4. Threshold fully homomorphic encryption (THFE) within smart contracts.
 
-See Phases of BITE for details: /bite/phases
 
----
+See Phases of BITE for details: /bite/phases
 
 ## Native MEV Resistance
 
@@ -55,8 +52,6 @@ In Ethereum:
 
 MEV actors target these fields to extract value. BITE conceals them until after block finality, making front-running impossible.
 
----
-
 ## Two‑Phase Execution Model
 
 1. Inclusion Phase – Encrypted transactions are verified and finalized onchain.
@@ -64,16 +59,12 @@ MEV actors target these fields to extract value. BITE conceals them until after 
 
 Because inclusion happens before decryption, FAIR achieves commit‑then‑reveal semantics, preventing frontrunning and censorship at the protocol layer.
 
----
-
 ## Censorship Resistance
 
 With BITE Protocol:
 - The transaction to field is encrypted.
 - Similar transactions (same gas/data patterns) cannot be easily correlated or censored.
 - Routine activity becomes opaque to outside observers.
-
----
 
 ## Consensus And Key Management
 
@@ -85,11 +76,3 @@ With BITE Protocol:
 Additional reading:
 - BITE Whitepaper: https://skale.space/BITEWhitepaper
 - FAIR Whitepaper: https://fairchain.ai/whitepaper
-
----
-
-## Developer Quick Links
-
-- How BITE Works: /bite/how-it-works
-- Phases of BITE: /bite/phases
-- TypeScript SDK: /bite/sdks/typescript

@@ -67,8 +67,8 @@ export default defineConfig({
       text: 'BITE Protocol',
       items: [
         { text: 'Introduction', link: '/bite/introduction' },
-        { text: 'MEV Deep Dive', link: '/bite/how-it-works' },
         { text: 'Phases of BITE', link: '/bite/phases' },
+        { text: 'MEV Deep Dive', link: '/bite/mev-deep-dive' },
         {
           text: 'SDKs',
           items: [

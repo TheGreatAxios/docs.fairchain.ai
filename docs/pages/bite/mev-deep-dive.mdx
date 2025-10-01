@@ -1,0 +1,63 @@
+---
+title: MEV Deep Dive
+description: What MEV Is, Where It Comes From, And Why Only Consensus‑Layer Protections Like BITE Close It
+---
+
+## What Is MEV?
+
+Maximal Extractable Value (MEV) is profit captured by changing transaction ordering, insertion, or censorship. It appears wherever pending intent is visible and ordering rights exist.
+
+Who Extracts MEV:
+- Searchers: craft arbitrage, liquidations, sandwich bundles
+- Builders/Relayers: order bundles; sell flow; back‑order across flows
+- Proposers/Validators: finalize ordering within protocol rules
+
+## Common Patterns
+
+- Sandwiching DEX Swaps — buy before a visible large swap, sell after to harvest slippage
+- Backrunning Liquidations — race to execute liquidation as a position crosses a threshold
+- JIT Liquidity On AMMs — add liquidity for one trade, collect fees, remove
+- Oracle/OEV Timing — trade around oracle updates to affect downstream protocols
+- Cross‑Venue Arbitrage and NFT Sniping — exploit price gaps or pending listings
+
+Further reading on builders: galaxy.com/insights/research/mev-the-rise-of-the-builders
+
+## Why Private RPCs and Private Mempools Fall Short
+
+- Orderflow Auctions (OFAs) & Private RPCs — flow can still be sold; builders can back‑order across flows
+- “Private Mempools” & Encryption In Transit — metadata and timing leak intent; bundle markets persist
+- Offchain Trust and Censorship — wallets/RPCs/relays are choke points; operators can reorder or delay
+
+Conclusion: as long as contents are visible pre‑finality, ordering rights can extract value.
+
+## The Only Durable Fix: Protocol‑Level Privacy
+
+- Commit‑Then‑Reveal — include and finalize encrypted transactions, reveal only after finality
+- Threshold Encryption of Intent — encrypt `to` and `data` under committee keys; no one previews or sells flow
+- Deterministic Security — breaking privacy would require substantial committee collusion, not offchain promises
+
+## How BITE Neutralizes MEV
+
+- Encrypted Inclusion — transactions propagate and are included while `to` and `data` remain concealed
+- Post‑Finality Decryption — validators decrypt just‑in‑time (JIT) for EVM execution
+- Wallet Compatibility — standard Ethereum transaction format; no wallet/RPC changes required
+
+Result:
+- Sandwiching — hidden pools/pairs/amounts → no front‑/back‑run crafting
+- Liquidations — hidden health/payoff → no profitable race window
+- OEV — dependent calls concealed → ordering games around updates fade
+- Flow Markets — encrypted intent → nothing to sell or back‑order
+
+## What Still Remains
+
+- Fees & Priority: tips/priorities remain; protocol fees still apply
+- External‑Domain MEV — other chains/venues still have MEV; FAIR removes FAIR‑side visibility
+- App Safety Rails — keep slippage/deadlines as backups, not primary defense
+
+## Deeper Reading
+- https://skale.space/BITEWhitepaper
+- https://fairchain.ai/whitepaper
+- https://chain.link/education-hub/maximal-extractable-value-mev
+- https://ethereum.org/developers/docs/mev/
+- https://arxiv.org/abs/2407.19572
+- https://ledger.com/academy/glossary/maximal-extractable-value-mev
