@@ -49,6 +49,7 @@ export default defineConfig({
         {
           text: "Network Info",
           items: [
+            { text: "Connect to FAIR", link: "/builders/connect-to-fair" },
             { text: "FAIR Contracts", link: "/builders/contracts" },
             { text: "Network Fees", link: "/builders/network-fees" }
           ]
