@@ -79,6 +79,33 @@ export default defineConfig({
       ]
     },
     {
+      text: 'Node Operators',
+      items: [
+        { text: "Getting Started", link: "/node-operators/getting-started" },
+        { text: "Node Types", link: "/node-operators/node-types" },
+        {
+          text: "Run a Node",
+          items: [
+            { text: "Passive Node", link: "/node-operators/run-a-node/passive-node" },
+            { text: "Active (Consensus) Node", link: "/node-operators/run-a-node/active-node" },
+          ]
+        },
+        {
+          text: "Node CLI",
+          items: [],
+          collapsed: true
+        },
+        {
+          text: "Releases",
+          items: [],
+          collapsed: true
+        },
+        {
+          text: "Troubleshooting", link: "/node-operators/troubleshooting"
+        }
+      ]
+    },
+    {
       text: 'Resources',
       items: [
         { text: 'Glossary', link: '/resources/glossary' },
