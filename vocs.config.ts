@@ -81,7 +81,9 @@ export default defineConfig({
     {
       text: 'Resources',
       items: [
+        { text: "Testnet Faucet", link: 'https://faucet.fairchain.ai' },
         { text: 'Glossary', link: '/resources/glossary' },
+        { text: "Support", link: "https://discord.gg/skale" }
       ],
     },
   ],
